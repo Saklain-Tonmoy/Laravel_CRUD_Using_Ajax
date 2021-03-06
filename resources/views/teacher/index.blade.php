@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
     <title>Laravel 8 Ajax Crud Application</title>
     
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
@@ -92,14 +92,15 @@
         $('#addButton').show();
         $('#updateButton').hide();
 
-        $.ajaxSetup({
-            headers:{
-                'X-CSRF-TOKEN' : $('meta [name="csrf-token"]').attr('content')
-            }
-        });
+        /******* CSRF token setup in ajax  *******/
+        // $.ajaxSetup({
+        //     headers:{
+        //         'X-CSRF-TOKEN' : $('meta [name="csrf-token"]').attr('content')
+        //     }
+        // });
 
         
-
+        /******* Fetching All Data from database starts *******/
         function allData() {
             $.ajax({
                 type: "GET",
@@ -131,6 +132,9 @@
 
         allData();
 
+        /********* Fetching All Data ends *********/
+
+        /******** Storing form data into database starts  */
         $("#teacherForm").on('submit', function(e) {
             e.preventDefault();
 
@@ -152,53 +156,13 @@
                     allData();
                     $("#teacherForm")[0].reset();
                     console.log('Data added Successfully.')
+                },
+                error: function(error) {
+
                 }
             });
         });
-        
-        
-
-        // function addData() {
-        //     var name = $('#name').val();
-        //     var title = $('#title').val();
-        //     var institute = $('#institute').val();
-
-        //     // console.log(name);
-        //     // console.log(title);
-        //     // console.log(institute);
-
-        //     $.ajax({
-        //         type: "POST",
-        //         dataType: "json",
-                
-        //         // _token: {{csrf_token()}},
-        //         data: {name:name, title:title, institute:institute},
-        //         url: "{{route('teacher.store')}}",
-        //         success: function(data) {
-        //             console.log('successfully added data');
-        //         }
-
-        //     })
-
-            
-        // }
-
-        // addData();
-
-        
-        // $("#teacherForm").on('submit', function(e) {
-        //     e.preventDefault();
-
-        //     $.ajax({
-        //         type: "POST",
-        //         dataType: "json",
-        //         url: "{{route('teacher.store')}}",
-        //         data: {name:name, title:title, institute:institute},
-        //         success: function(response) {
-        //             console.log("successfully added data");
-        //         }
-        //     })
-        // })
+        /******** Storing All Data into database ends *******/
         
 
     </script>
