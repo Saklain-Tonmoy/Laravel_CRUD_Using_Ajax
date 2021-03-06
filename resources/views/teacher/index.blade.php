@@ -28,7 +28,7 @@
                         All Teachers
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">S.No</th>
@@ -66,14 +66,17 @@
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                                <span class="text-danger" id="nameError"></span>
                             </div>
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" class="form-control" id="title" placeholder="Enter Title">
+                                <span class="text-danger" id="titleError"></span>
                             </div>
                             <div class="form-group">
                                 <label for="institute">Institute</label>
                                 <input type="text" class="form-control" id="institute" placeholder="Enter Institute">
+                                <span class="text-danger" id="instituteError"></span>
                             </div>
                             
                             <button type="submit" id="addButton" class="btn btn-primary">Add</button>
@@ -134,6 +137,17 @@
 
         /********* Fetching All Data ends *********/
 
+        /****** Reseting the teacherForm & the validation messages starts *******/
+        function clearData() {
+            $("#name").val('');
+            $("#title").val('');
+            $("#institute").val('');
+            $("#nameError").text('');
+            $("#titleError").text('');
+            $("#instituteError").text('');
+        }
+        /*********** Reseting the teacherForm ends ********/
+
         /******** Storing form data into database starts  */
         $("#teacherForm").on('submit', function(e) {
             e.preventDefault();
@@ -153,12 +167,18 @@
                     _token:_token,
                 },
                 success: function(response) {
-                    allData();
-                    $("#teacherForm")[0].reset();
+                    allData();  // this function has been called to fetch the data after insertion
+                    clearData();    // this function has been called to reset the form and also to vanish the validation message
+                    // $("#teacherForm")[0].reset();       // this line of code resets the teacherForm
                     console.log('Data added Successfully.')
                 },
                 error: function(error) {
-
+                    $("#nameError").text(error.responseJSON.errors.name);
+                    $("#titleError").text(error.responseJSON.errors.title);
+                    $("#instituteError").text(error.responseJSON.errors.institute);
+                    console.log(error.responseJSON.errors.name);
+                    console.log(error.responseJSON.errors.title);
+                    console.log(error.responseJSON.errors.institute);
                 }
             });
         });

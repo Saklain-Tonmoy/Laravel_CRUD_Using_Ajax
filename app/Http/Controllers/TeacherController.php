@@ -89,6 +89,12 @@ class TeacherController extends Controller
     }
 
     public function storeData(Request $request) {
+
+        $request->validate([
+            'name' => 'required',
+            'title' => 'required',
+            'institute' => 'required'
+        ]);
         
         /******* this is a way to insert data into database *********/
 
