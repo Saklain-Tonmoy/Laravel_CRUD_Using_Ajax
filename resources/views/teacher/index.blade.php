@@ -62,20 +62,21 @@
                     </div>
                     <div class="card-body">
                         <form>
+                            @csrf
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name">
                             </div>
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input type="text" class="form-control" id="title" placeholder="Enter Title">
+                                <input type="text" class="form-control" name="title" id="title" placeholder="Enter Title">
                             </div>
                             <div class="form-group">
                                 <label for="institute">Institute</label>
-                                <input type="text" class="form-control" id="institute" placeholder="Enter Institute">
+                                <input type="text" class="form-control" name="institute" id="institute" placeholder="Enter Institute">
                             </div>
                             
-                            <button type="submit" id="addButton" class="btn btn-primary">Add</button>
+                            <button type="submit" id="addButton" onclick="addData()" class="btn btn-primary">Add</button>
                             <button type="submit" id="updateButton" class="btn btn-primary">Update</button>
                         </form>
                     </div>
@@ -126,6 +127,34 @@
                     $('tbody').html(data);
                 }
             });
+        }
+
+        
+        addData();
+        
+
+        function addData() {
+            var name = $('#name').val();
+            var title = $('#title').val();
+            var institute = $('#institute').val();
+
+            // console.log(name);
+            // console.log(title);
+            // console.log(institute);
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/teacher/store",
+                // _token: {{csrf_token()}},
+                data: {name:name, title:title, institute:institute},
+                success: function(response) {
+                    console.log('successfully added data');
+                }
+
+            })
+
+            
         }
         
 

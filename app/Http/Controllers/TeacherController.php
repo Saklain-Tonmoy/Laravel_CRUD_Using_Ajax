@@ -87,4 +87,17 @@ class TeacherController extends Controller
         $data = Teacher::orderBy('id', 'DESC')->get();
         return response()->json($data);
     }
+
+    public function storeData(Request $request) {
+        dd($request->all());
+        // $data = Teacher::insert([
+        //     'name' => $request->name,
+        //     'title' => $request->title,
+        //     'institute' => $request->institute,
+        // ]);
+
+        // // return response()->json($data);
+
+        // console.log('hello');
+    }
 }
