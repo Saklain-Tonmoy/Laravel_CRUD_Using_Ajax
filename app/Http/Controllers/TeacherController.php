@@ -89,15 +89,25 @@ class TeacherController extends Controller
     }
 
     public function storeData(Request $request) {
-        dd($request->all());
+        
+        /******* this is a way to insert data into database *********/
+
         // $data = Teacher::insert([
         //     'name' => $request->name,
         //     'title' => $request->title,
         //     'institute' => $request->institute,
         // ]);
 
-        // // return response()->json($data);
+        
+        /****** This is another way to store data into database *******/
+        $data = new Teacher();
 
-        // console.log('hello');
+        $data->name = $request->name;
+        $data->title = $request->title;
+        $data->institute = $request->institute;
+
+        $data->save();
+
+        
     }
 }
