@@ -64,7 +64,6 @@
                     <div class="card-body">
                         <form id="teacherForm">
                             @csrf
-                            <input type="hidden" id="id">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter Name">
@@ -126,7 +125,7 @@
                         data += "<td>" + value.institute + "</td>"
                         data += "<td>"
                         data += '<button class="btn btn-sm btn-primary float-left mr-2" id="editButton" data-id=" '+ value.id +' ">Edit</button>'  // adding the button using DOM.  data-id has been used to keep the track of the id
-                        data += '<button class="btn btn-sm btn-danger float-left mr-2" id="deleteButton" data-id=" '+ value.id +' ">Delete</button>'   // adding the button using DOM
+                        data += '<button type="submit" class="btn btn-sm btn-danger float-left mr-2" id="deleteButton" data-id=" '+ value.id +' ">Delete</button>'   // adding the button using DOM
                         data += "</td>"
                         data += "</tr>"
                     })
@@ -234,6 +233,7 @@
         /********** Fetch data from database and show it in the Form starts **********/
         /*********** When Any Button is added to the page using DOM then you have to use 
             $(document).on('click, '#buttonId', function() {})  ***********/
+
         // $(document).on('click', '#editButton', function() {
             
         //     $("#addTitle").hide();
@@ -285,9 +285,32 @@
             $("#institute").val(data[3]);
         });
 
+        $(document).on('click', '#deleteButton', function() {
+
+            let id = $(this).data('id');
+            let _token = $("input[name=_token]").val();
+
+            $.ajax({
+                type: "DELETE",
+                dataType: "json",
+                url: "{{route('teacher.delete')}}",
+                data: {
+                    id: id,
+                    _token: _token,
+                },
+                success: function(response) {
+                    console.log(response);
+                    allData();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
 
 
-        $(document).on('click', '#updateButton', function() {
+
+        $('#updateButton').on('click', function() {
 
             let id = $("#id").val();
             console.log(id);

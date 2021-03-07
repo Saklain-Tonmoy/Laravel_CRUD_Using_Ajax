@@ -26,3 +26,4 @@ Route::get('/teacher/all', [App\Http\Controllers\TeacherController::class, 'allD
 Route::post('/teacher/store', [App\Http\Controllers\TeacherController::class, 'storeData'])->name('teacher.store');
 Route::get('/teacher/edit', [App\Http\Controllers\TeacherController::class, 'editData'])->name('teacher.edit');
 Route::put('/teacher/update', [App\Http\Controllers\TeacherController::class, 'updateData'])->name('teacher.update');
+Route::delete('/teacher/delete', [App\Http\Controllers\TeacherController::class, 'deleteData'])->name('teacher.delete');

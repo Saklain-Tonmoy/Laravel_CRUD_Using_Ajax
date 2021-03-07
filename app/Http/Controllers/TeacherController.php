@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class TeacherController extends Controller
 {
@@ -166,5 +167,15 @@ class TeacherController extends Controller
         // else {
         //     return response()->json($data);
         // }
+    }
+
+    public function deleteData(Request $request) {
+        $teacher = Teacher::findOrFail($request->id);
+
+        if($teacher) {
+            $status = $teacher->delete();
+        } else {
+            return back()->with('error', 'Data not found!!!');
+        }
     }
 }
