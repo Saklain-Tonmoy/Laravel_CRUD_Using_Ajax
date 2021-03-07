@@ -91,9 +91,9 @@ class TeacherController extends Controller
     public function storeData(Request $request) {
 
         $request->validate([
-            'name' => 'required',
-            'title' => 'required',
-            'institute' => 'required'
+            'name' => 'string|required',
+            'title' => 'string|required',
+            'institute' => 'string|required',
         ]);
         
         /******* this is a way to insert data into database *********/
@@ -119,7 +119,50 @@ class TeacherController extends Controller
 
 
     public function editData(Request $request) {
-        $data = Teacher::findorfail($request->id);
+        $data = Teacher::findOrFail($request->id);
         return response()->json($data);
+    }
+
+    public function updateData(Request $request) {
+
+        $teacher = Teacher::findOrFail($request->id);
+
+        if($teacher && $request->validate([
+            'name' => 'string|required',
+            'title' => 'string|required',
+            'institute' => 'string|required'
+        ])) {
+            
+            
+
+            $data = $request->all();
+
+            $status = $teacher->fill($data)->save();
+
+            return response()->json($status);
+            
+
+
+        } else {
+            return response()->json($teacher);
+        }
+        
+
+        // if($request->validate([
+        //     'name' => 'required',
+        //     'title' => 'required',
+        //     'institute' => 'required'
+        // ]) && $data) {
+
+        //     Teacher::insert([
+        //     'name' => $request->name,
+        //     'title' => $request->title,
+        //     'institute' => $request->institute,
+        //     ]);
+            
+        // }
+        // else {
+        //     return response()->json($data);
+        // }
     }
 }

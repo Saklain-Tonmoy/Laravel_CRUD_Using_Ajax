@@ -64,6 +64,7 @@
                     <div class="card-body">
                         <form id="teacherForm">
                             @csrf
+                            <input type="hidden" id="id">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter Name">
@@ -195,7 +196,7 @@
         $(document).on('click', '#buttonId', function() {}) =>for button click
         $(document).on('submit', '#formId', function() {}) =>for Form submit
         ****/
-        $('#teacherForm').on('submit', function(e) {
+        $('#addButton').on('click', function(e) {
             e.preventDefault();
 
             let name = $("#name").val();
@@ -230,9 +231,42 @@
         });
         /******** Storing All Data into database ends *******/
 
-
+        /********** Fetch data from database and show it in the Form starts **********/
         /*********** When Any Button is added to the page using DOM then you have to use 
             $(document).on('click, '#buttonId', function() {})  ***********/
+        // $(document).on('click', '#editButton', function() {
+            
+        //     $("#addTitle").hide();
+        //     $("#updateTitle").show();
+        //     $("#addButton").hide();
+        //     $("#updateButton").show();
+            
+        //     var id = $(this).data('id');    // this is nothing but getting the value of 'data-id' from the edit button. 'data-id' has to be fetched by the code: $(this).data('id') in jquery
+        //     //alert(id);
+
+        //     $.ajax({
+        //         type: "GET",
+        //         dataType: "json",
+        //         url: "{{route('teacher.edit')}}",
+        //         data: {
+        //             id:id,
+        //         },
+        //         success: function(response) {
+        //             console.log(response);
+        //             $("#name").val(response.name);
+        //             $("#title").val(response.title);
+        //             $("#institute").val(response.institute);
+        //         },
+        //         error: function(error) {
+        //             console.log(error);
+        //         }
+        //     });
+        // });
+
+        /********** Fetch data from database and show it in the Form ends **********/
+
+
+        /********** Fetch data from DataTable and show it in the Form starts **********/
         $(document).on('click', '#editButton', function() {
             
             $("#addTitle").hide();
@@ -240,27 +274,62 @@
             $("#addButton").hide();
             $("#updateButton").show();
             
-            var id = $(this).data('id');    // this is nothing but getting the value of 'data-id' from the edit button. 'data-id' has to be fetched by the code: $(this).data('id') in jquery
-            //alert(id);
+            $tr = $(this).closest('tr');
+            var data = $tr.children('td').map(function() {
+                return $(this).text();
+            }).get();
+            console.log(data);
+            $("#id").val(data[0]);
+            $("#name").val(data[1]);
+            $("#title").val(data[2]);
+            $("#institute").val(data[3]);
+        });
+
+
+
+        $(document).on('click', '#updateButton', function() {
+
+            let id = $("#id").val();
+            console.log(id);
+            let name = $("#name").val();
+            let title = $("#title").val();
+            let institute = $("#institute").val();
+            let _token = $("input[name=_token]").val();
 
             $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: "{{route('teacher.edit')}}",
+                type: "PUT",
+                url: "{{route('teacher.update')}}",               
                 data: {
-                    id:id,
+                    id: id,
+                    name: name,
+                    title:title,
+                    institute:institute,
+                    _token:_token,
                 },
                 success: function(response) {
-                    console.log(response);
-                    $("#name").val(response.name);
-                    $("#title").val(response.name);
-                    $("#institute").val(response.name);
+                    allData();  // this function has been called to fetch the data after insertion
+                    clearData();    // this function has been called to reset the form and also to vanish the validation message
+                    // $("#teacherForm")[0].reset();       // this line of code resets the teacherForm
+                    $('#addTitle').show();
+                    $('#updateTitle').hide();
+                    $('#addButton').show();
+                    $('#updateButton').hide();
+
+                    console.log('Data added Successfully.');
                 },
                 error: function(error) {
-                    console.log(error);
+                    $("#nameError").text(error.responseJSON.errors.name);
+                    $("#titleError").text(error.responseJSON.errors.title);
+                    $("#instituteError").text(error.responseJSON.errors.institute);
+                    console.log(error.responseJSON.errors.name);
+                    console.log(error.responseJSON.errors.title);
+                    console.log(error.responseJSON.errors.institute);
                 }
-            });
+
+            
         });
+    });
+
         
 
     </script>
