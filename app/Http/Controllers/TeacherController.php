@@ -116,4 +116,10 @@ class TeacherController extends Controller
 
         
     }
+
+
+    public function editData(Request $request) {
+        $data = Teacher::findorfail($request->id);
+        return response()->json($data);
+    }
 }

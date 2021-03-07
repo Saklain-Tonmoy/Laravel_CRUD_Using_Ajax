@@ -58,8 +58,8 @@
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-header">
-                        <span id="addT">Add New Teacher</span>
-                        <span id="updateT">Update Teacher</span>
+                        <span id="addTitle">Add New Teacher</span>
+                        <span id="updateTitle">Update Teacher</span>
                     </div>
                     <div class="card-body">
                         <form id="teacherForm">
@@ -91,8 +91,8 @@
 
     <script>
     
-        $('#addT').show();
-        $('#updateT').hide();
+        $('#addTitle').show();
+        $('#updateTitle').hide();
         $('#addButton').show();
         $('#updateButton').hide();
 
@@ -124,8 +124,8 @@
                         data += "<td>" + value.title + "</td>"
                         data += "<td>" + value.institute + "</td>"
                         data += "<td>"
-                        data += '<button class="btn btn-sm btn-primary float-left mr-2" id="editButton">Edit</button>'  // adding the button using DOM
-                        data += '<button class="btn btn-sm btn-danger float-left mr-2" id="deleteButton">Delete</button>'   // adding the button using DOM
+                        data += '<button class="btn btn-sm btn-primary float-left mr-2" id="editButton" data-id=" '+ value.id +' ">Edit</button>'  // adding the button using DOM.  data-id has been used to keep the track of the id
+                        data += '<button class="btn btn-sm btn-danger float-left mr-2" id="deleteButton" data-id=" '+ value.id +' ">Delete</button>'   // adding the button using DOM
                         data += "</td>"
                         data += "</tr>"
                     })
@@ -137,7 +137,7 @@
         allData();
 
         /********* Fetching All Data ends *********/
-        
+
 
         /****** Reseting the teacherForm & the validation messages starts *******/
         function clearData() {
@@ -235,7 +235,31 @@
             $(document).on('click, '#buttonId', function() {})  ***********/
         $(document).on('click', '#editButton', function() {
             
-            alert('hello');
+            $("#addTitle").hide();
+            $("#updateTitle").show();
+            $("#addButton").hide();
+            $("#updateButton").show();
+            
+            var id = $(this).data('id');    // this is nothing but getting the value of 'data-id' from the edit button. 'data-id' has to be fetched by the code: $(this).data('id') in jquery
+            //alert(id);
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{route('teacher.edit')}}",
+                data: {
+                    id:id,
+                },
+                success: function(response) {
+                    console.log(response);
+                    $("#name").val(response.name);
+                    $("#title").val(response.name);
+                    $("#institute").val(response.name);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         });
         
 
