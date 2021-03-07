@@ -127,11 +127,13 @@ class TeacherController extends Controller
 
         $teacher = Teacher::findOrFail($request->id);
 
-        if($teacher && $request->validate([
+        $request->validate([
             'name' => 'string|required',
             'title' => 'string|required',
             'institute' => 'string|required'
-        ])) {
+        ]);
+
+        if($teacher) {
             
             
 
