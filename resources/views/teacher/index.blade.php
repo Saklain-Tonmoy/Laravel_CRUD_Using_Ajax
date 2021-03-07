@@ -29,6 +29,7 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-striped">
+                            @csrf
                             <thead>
                                 <tr>
                                     <th scope="col">S.No</th>
@@ -123,8 +124,8 @@
                         data += "<td>" + value.title + "</td>"
                         data += "<td>" + value.institute + "</td>"
                         data += "<td>"
-                        data += '<button class="btn btn-sm btn-primary float-left mr-2">Edit</button>'
-                        data += '<button class="btn btn-sm btn-danger float-left mr-2">Delete</button>'
+                        data += '<button class="btn btn-sm btn-primary float-left mr-2" id="editButton">Edit</button>'  // adding the button using DOM
+                        data += '<button class="btn btn-sm btn-danger float-left mr-2" id="deleteButton">Delete</button>'   // adding the button using DOM
                         data += "</td>"
                         data += "</tr>"
                     })
@@ -136,6 +137,7 @@
         allData();
 
         /********* Fetching All Data ends *********/
+        
 
         /****** Reseting the teacherForm & the validation messages starts *******/
         function clearData() {
@@ -148,8 +150,52 @@
         }
         /*********** Reseting the teacherForm ends ********/
 
-        /******** Storing form data into database starts  */
-        $("#teacherForm").on('submit', function(e) {
+
+        /******** Storing form data into database using $(document).on('click', '#buttonId', function() {}) starts  */
+        // $(document).on('click', '#addButton', function(e) {
+        //     e.preventDefault();
+
+        //     let name = $("#name").val();
+        //     let title = $("#title").val();
+        //     let institute = $("#institute").val();
+        //     let _token = $("input[name=_token]").val();
+
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "{{route('teacher.store')}}",               
+        //         data: {
+        //             name: name,
+        //             title:title,
+        //             institute:institute,
+        //             _token:_token,
+        //         },
+        //         success: function(response) {
+        //             allData();  // this function has been called to fetch the data after insertion
+        //             clearData();    // this function has been called to reset the form and also to vanish the validation message
+        //             // $("#teacherForm")[0].reset();       // this line of code resets the teacherForm
+        //             console.log('Data added Successfully.')
+        //         },
+        //         error: function(error) {
+        //             $("#nameError").text(error.responseJSON.errors.name);
+        //             $("#titleError").text(error.responseJSON.errors.title);
+        //             $("#instituteError").text(error.responseJSON.errors.institute);
+        //             console.log(error.responseJSON.errors.name);
+        //             console.log(error.responseJSON.errors.title);
+        //             console.log(error.responseJSON.errors.institute);
+        //         }
+        //     });
+        // });
+        /******** Storing All Data into database ends *******/
+
+
+        /******** Storing form data into database using $('#formId').on('submit', function() {}) starts  *******/
+        /**** This is the general way to store data on FORM Submit, 
+        but when a button or form is added or prepened or appened using DOM,
+        then you have to use: 
+        $(document).on('click', '#buttonId', function() {}) =>for button click
+        $(document).on('submit', '#formId', function() {}) =>for Form submit
+        ****/
+        $('#teacherForm').on('submit', function(e) {
             e.preventDefault();
 
             let name = $("#name").val();
@@ -183,6 +229,14 @@
             });
         });
         /******** Storing All Data into database ends *******/
+
+
+        /*********** When Any Button is added to the page using DOM then you have to use 
+            $(document).on('click, '#buttonId', function() {})  ***********/
+        $(document).on('click', '#editButton', function() {
+            
+            alert('hello');
+        });
         
 
     </script>
