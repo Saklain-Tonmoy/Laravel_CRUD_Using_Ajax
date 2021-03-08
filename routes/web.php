@@ -17,7 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('student', [App\Http\Controllers\StudentController::class, 'index']);
+Route::get('/student', [App\Http\Controllers\StudentController::class, 'index'])->name('student.index');
+Route::get('/student/all', [App\Http\Controllers\StudentController::class, 'allData'])->name('student.allData');
+Route::post('/addstudent', [App\Http\Controllers\StudentController::class, 'store'])->name('student.store');
+Route::put('/updatestudent', [App\Http\Controllers\StudentController::class, 'update'])->name('student.update');
+Route::delete('/deletestudent', [App\Http\Controllers\StudentController::class, 'delete'])->name('student.delete');
 
 // Route::post('/addstudent', [App\Http\Controllers\StudentController::class, 'store']);
 
